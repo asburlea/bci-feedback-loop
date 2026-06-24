@@ -1,9 +1,8 @@
-# bci-online-preprocessing
-This repository focuses on preprocessing EEG signals in real time.
-All operations are causal and suitable for streaming applications.
+# bci-feedback-loop
 
-Topics covered in this repository:
-- Causal band-pass filtering
-- Stateful filter design
-- Sliding window segmentation
-- Offline vs online comparison
+This repository implements real-time feedback for BCI systems.
+Feedback timing and stability are critical for learning and control.
+
+Feedback types that we will cover here:
+- Visual bar feedback
+- Continuous control signals
