@@ -1,24 +1,18 @@
 """
-Minimal real-time preprocessing pipeline
+Closed-loop real-time feedback pipeline
 """
 
 from pylsl import StreamInlet, resolve_stream
-from src.filters import OnlineBandpass
-from src.windowing import SlidingWindow
+from src.feedback import VisualBar
+from src.controller import Controller
 
-FS = 250
-N_CHANNELS = 8
-
-streams = resolve_stream("type", "EEG")
+streams = resolve_stream("type", "BCI_PREDICTION")
 inlet = StreamInlet(streams[0])
 
-filt = OnlineBandpass(fs=FS, low=8, high=30, n_channels=N_CHANNELS)
-window = SlidingWindow(size=FS, step=FS // 4)
+feedback = VisualBar()
+controller = Controller()
 
 while True:
-    sample, _ = inlet.pull_sample()
-    sample = filt.process(sample)
-    win = window.update(sample)
-
-    if win is not None:
-        print("Window ready:", win.shape)
+    pred, _ = inlet.pull_sample()
+    value = controller.update(pred[0])
+    feedback.update(value)
